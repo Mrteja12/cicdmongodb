@@ -3,50 +3,55 @@ pipeline {
   stages {
     stage("Clear Workspace"){
         steps {
-          sh 'rm -rvf t*'
+          sh 'rm -rvf p*'
         }
     }
     stage("Checkout") {
         steps {
-        sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
+        sh 'git clone https://github.com/prabhakarvarma1218/project3.git'
       }
     }
     stage('GCP Auth') {
         steps {
-         withCredentials([usernameColonPassword(credentialsId: 'GCP_PROJECT', variable: 'GCP_PROJECT'), file(credentialsId: 'GCP_CREDENTIALS', variable: 'GCP_CREDENTIALS')]) {
+         withCredentials([usernameColonPassword(credentialsId: 'fb1904be-ba23-43e4-b5d3-9b8941900198', variable: 'GCP_PROJECTS'), file(credentialsId: 'cf29bd52-a354-4ca2-afea-ae0859a0915d', variable: 'GCP_CREDENTIALS')]) {
          sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
         }
       }
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: 'cc4576a5-5d72-495e-aef7-74b11ce9e03e', variable: 'Docker_credentials')]) {
-        sh "docker login -u charyy -p 123456789"
-        sh 'docker pull charyy/mongodb:taga'
+        withCredentials([usernameColonPassword(credentialsId: '39986bbb-5ad2-449a-b592-4b5afe0c1e72', variable: 'DOCKER')]) {
+        sh 'docker login -u prabhakarvarma1218 -p moksha@1218'
+        sh 'docker pull prabhakarvarma1218/spark:tag1'
+        sh 'docker pull prabhakarvarma1218/talented:tag'
        }
      }
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/mongodb:taga gcr.io/tatrak-408506/mongodb:testa'
+         sh 'docker tag prabhakarvarma1218/spark:tag1 gcr.io/model-argon-389809/spark:test2'
+         sh 'docker tag prabhakarvarma1218/talented:tag gcr.io/model-argon-389809/talented:tag2'
       }
     }
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push gcr.io/tatrak-408506/mongodb:testa'
+             sh 'docker push gcr.io/model-argon-389809/spark:test2'
+             sh 'docker push gcr.io/model-argon-389809/talented:tag2'
            }
         }
      stage("cluster create") {
        steps {
-          sh 'gcloud container clusters create tomcat-cluster --num-nodes 3 --location=asia-south1-b'
+          sh 'gcloud container clusters create spark-cluster --num-nodes 3 --location=asia-east1-a'
        }
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment mongodb --image=gcr.io/tatrak-408506/mongodb:testa'
-         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
+         sh 'kubectl create deployment datawarehouse-spark --image=gcr.io/model-argon-389809/spark:test2'
+         sh 'kubectl expose deployment datawarehouse-spark --type=LoadBalancer --port 80 --target-port 8080'
        }
     }
   }  
-}    
+} 
+
+has context menu
