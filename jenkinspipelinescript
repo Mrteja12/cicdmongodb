@@ -8,7 +8,7 @@ sh 'rm -rvf t*'
 }
 stage("Checkout") {
 steps {
-sh 'git clone https://github.com/KrishnaMaddila/tomcat.git'
+sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
 }
 }
 stage('GCP Auth') {
@@ -28,7 +28,7 @@ sh 'docker pull charyy/mongodb:taga'
 }
 stage("Docker tag") {
 steps {
-sh 'docker tag charyy/mongodb:taga gcr.io/	tarak-408506/mongodb:testa'
+sh 'docker tag charyy/mongodb:taga gcr.io/tarak-408506/mongodb:testa'
 }
 }
 stage("Docker push") {
