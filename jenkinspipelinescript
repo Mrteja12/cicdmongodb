@@ -1,52 +1,52 @@
 pipeline {
-agent any
-stages {
-stage("Clear Workspace"){
-steps {
-sh 'rm -rvf t*'
-}
-}
-stage("Checkout") {
-steps {
-sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
-}
-}
-stage('GCP Auth') {
-steps {
-withCredentials([usernameColonPassword(credentialsId: 'GCP_PROJECT', variable: 'GCP_PROJECT'), file(credentialsId: 'GCP_CREDENTIALS', variable: 'GCP_CREDENTIALS')]) {
-sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
-}
-}
-}
-stage("Docker pull") {
-steps {
-withCredentials([usernameColonPassword(credentialsId: '5f82ba5a00ef052d050b0e3cb78c40d08544373d1667d839efc3e92a66f37b04', variable: 'Docker_credentials')]) {
-sh "docker login -u charyy -123456789
-sh 'docker pull charyy/mongodb:taga'
-}
-}
-}
-stage("Docker tag") {
-steps {
-sh 'docker tag charyy/mongodb:taga gcr.io/tarak-408506/mongodb:testa'
-}
-}
-stage("Docker push") {
-steps {
-sh 'gcloud auth configure-docker'
-sh 'docker push gcr.io/tarak-408506/mongodb:testa'
-}
-}
-stage("cluster create") {
-steps {
-sh 'gcloud container clusters create mongodb-cluster --num-nodes 3 --location=asia-south1-b'
-}
-}
-stage("Create & expose deploy") {
-steps {
-sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:testa'
-sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
-}
-}
-}
-}
+  agent any
+  stages {
+    stage("Clear Workspace"){
+        steps {
+          sh 'rm -rvf t*'
+        }
+    }
+    stage("Checkout") {
+        steps {
+        sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
+      }
+    }
+    stage('GCP Auth') {
+        steps {
+         withCredentials([usernameColonPassword(credentialsId: 'GCP_PROJECT', variable: 'GCP_PROJECT'), file(credentialsId: 'GCP_CREDENTIALS', variable: 'GCP_CREDENTIALS')]) {
+         sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
+        }
+      }
+    }
+    stage("Docker pull") {
+      steps {
+        withCredentials([usernameColonPassword(credentialsId: 'cc4576a5-5d72-495e-aef7-74b11ce9e03e', variable: 'Docker_credentials')]) {
+        sh "docker login -u charyy -p 123456789"
+        sh 'docker pull charyy/mongodb:taga'
+       }
+     }
+    }
+    stage("Docker tag") {
+      steps {     
+         sh 'docker tag charyy/mongodb:taga gcr.io/tatrak-408506/mongodb:testa'
+      }
+    }
+    stage("Docker push") { 
+        steps {
+             sh 'gcloud auth configure-docker'
+             sh 'docker push gcr.io/tatrak-408506/mongodb:testa'
+           }
+        }
+     stage("cluster create") {
+       steps {
+          sh 'gcloud container clusters create tomcat-cluster --num-nodes 3 --location=asia-south1-b'
+       }
+     }
+    stage("Create & expose deploy") {
+       steps {
+         sh 'kubectl create deployment mongodb --image=gcr.io/tatrak-408506/mongodb:testa'
+         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
+       }
+    }
+  }  
+}    
