@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage("Clear Workspace"){
         steps {
-          sh 'rm -rvf p*'
+          sh 'rm -rvf c*'
         }
     }
     stage("Checkout") {
