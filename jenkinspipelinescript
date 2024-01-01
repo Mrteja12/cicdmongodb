@@ -13,14 +13,14 @@ pipeline {
     }
     stage('GCP Auth') {
         steps {
-         withCredentials([usernameColonPassword(credentialsId: '47239e99-fde5-4428-a57e-e2379577d2da', variable: 'GCP_PROJECTS'), file(credentialsId: 'de3ade76-1b25-477b-b46c-44249b069121', variable: 'GCP_CREDENTIALS')]) {
+         withCredentials([usernameColonPassword(credentialsId: '6c9e54627dd756c4b7d3c25ddaae06883e2467b6', variable: 'GCP_PROJECTS'), file(credentialsId: '47239e99-fde5-4428-a57e-e2379577d2da', variable: 'GCP_CREDENTIALS')]) {
          sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
         }
       }
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: 'c53cd2b98f24467e1512bbbb1d751d64b75c3477e4f74cca4e9fa565b2e7d6d9', variable: 'DOCKER')]) {
+        withCredentials([usernameColonPassword(credentialsId: '5f82ba5a00ef052d050b0e3cb78c40d08544373d1667d839efc3e92a66f37b04', variable: 'DOCKER')]) {
         sh 'docker login -u charyy -p 123456789'
         sh 'docker pull charyy/tejachary:tag33'
        }
