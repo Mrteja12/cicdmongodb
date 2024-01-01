@@ -28,13 +28,13 @@ pipeline {
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/mongodb:taga gcr.io/tarak-408506/mongodb:tega'
+         sh 'docker tag charyy/mongodb:taga gcr.io/tarak-408506/mongodb'
       }
     }
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push gcr.io/tarak-408506/mongodb:taga'
+             sh 'docker push gcr.io/tarak-408506/mongodb'
            }
         }
      stage("cluster create") {
@@ -44,7 +44,7 @@ pipeline {
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:taga'
+         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb'
          sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 27017'
        }
     }
