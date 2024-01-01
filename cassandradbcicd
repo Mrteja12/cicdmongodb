@@ -13,14 +13,14 @@ pipeline {
     }
     stage('GCP Auth') {
         steps {
-         withCredentials([usernameColonPassword(credentialsId: '6c9e54627dd756c4b7d3c25ddaae06883e2467b6', variable: 'GCP_PROJECTS'), file(credentialsId: '47239e99-fde5-4428-a57e-e2379577d2da', variable: 'GCP_CREDENTIALS')]) {
+         withCredentials([usernameColonPassword(credentialsId: '6c9e54627dd756c4b7d3c25ddaae06883e2467b6', variable: 'GCP_PROJECTS'), file(credentialsId: 'de3ade76-1b25-477b-b46c-44249b069121', variable: 'GCP_CREDENTIALS')]) {
          sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
         }
       }
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: '5f82ba5a00ef052d050b0e3cb78c40d08544373d1667d839efc3e92a66f37b04', variable: 'DOCKER')]) {
+        withCredentials([usernameColonPassword(credentialsId: 'sha256:c53cd2b98f24467e1512bbbb1d751d64b75c3477e4f74cca4e9fa565b2e7d6d9', variable: 'DOCKER')]) {
         sh 'docker login -u charyy -p 123456789'
         sh 'docker pull charyy/tejachary:tag33'
        }
@@ -28,24 +28,24 @@ pipeline {
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/tejachary:tag33 gcr.io/tarak-408506/mongodb:taga'
+         sh 'docker tag charyy/tejachary:tag33 gcr.io/tarak-408506/cassandradb:taga'
       }
     }
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push gcr.io/tarak-408506/mongodb:taga'
+             sh 'docker push gcr.io/tarak-408506/cassandra:taga'
            }
         }
      stage("cluster create") {
        steps {
-          sh 'gcloud container clusters create mongodb-cluster --num-nodes 3 --location=asia-east1-a'
+          sh 'gcloud container clusters create cassandradb-cluster --num-nodes 3 --location=asia-east1-a'
        }
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:taga'
-         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
+         sh 'kubectl create deployment cassandradb --image=gcr.io/tarak-408506/cassandradb:taga'
+         sh 'kubectl expose deployment cassandradb --type=LoadBalancer --port 80 --target-port 8080'
        }
     }
   }  
