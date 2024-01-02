@@ -20,36 +20,33 @@ pipeline {
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: '39986bbb-5ad2-449a-b592-4b5afe0c1e72', variable: 'DOCKER')]) {
-        sh 'docker login -u prabhakarvarma1218 -p moksha@1218'
-        sh 'docker pull prabhakarvarma1218/spark:tag1'
-        sh 'docker pull prabhakarvarma1218/talented:tag'
+        withCredentials([usernameColonPassword(credentialsId: 'efcbe52a-62a4-41b6-9659-5f414d299cdc', variable: 'docker')]) {
+        sh 'docker login -u charyy -p 123456789'
+        sh 'docker pull charyy/tejachary:tag33'
+      
        }
      }
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag prabhakarvarma1218/spark:tag1 gcr.io/model-argon-389809/spark:test2'
-         sh 'docker tag prabhakarvarma1218/talented:tag gcr.io/model-argon-389809/talented:tag2'
+         sh 'docker tag charyy/tejachary:tag33 gcr.io/tarak-408506/mongodb:taga'
       }
     }
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push gcr.io/model-argon-389809/spark:test2'
-             sh 'docker push gcr.io/model-argon-389809/talented:tag2'
+             sh 'docker push charyy/tejachary:tag33'
            }
         }
      stage("cluster create") {
        steps {
-          sh 'gcloud container clusters create spark-cluster --num-nodes 3 --location=asia-east1-a'
+          sh 'gcloud container clusters create mongodb-cluster --num-nodes 3 --location=asia-east1-a'
        }
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment datawarehouse-spark --image=gcr.io/model-argon-389809/spark:test2'
-         sh 'kubectl create deployment datawarehouse-spark --image=gcr.io/model-argon-389809/talented:tag2'
-         sh 'kubectl expose deployment datawarehouse-spark --type=LoadBalancer --port 80 --target-port 8080'
+         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:taga'
+         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
        }
     }
   }  
