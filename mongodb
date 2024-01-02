@@ -3,12 +3,12 @@ pipeline {
   stages {
     stage("Clear Workspace"){
         steps {
-          sh 'rm -rvf p*'
+          sh 'rm -rvf c*'
         }
     }
     stage("Checkout") {
         steps {
-        sh 'git clone https://github.com/prabhakarvarma1218/project3.git'
+        sh 'https://github.com/Mrteja12/cicdmongodb.git'
       }
     }
     stage('GCP Auth') {
