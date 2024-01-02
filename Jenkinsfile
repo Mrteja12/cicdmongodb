@@ -1,0 +1,53 @@
+pipeline {
+  agent any
+  stages {
+    stage("Clear Workspace"){
+        steps {
+          sh 'rm -rvf G*'
+        }
+    }
+    stage("Checkout") {
+        steps {
+        sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
+      }
+    }
+    stage('GCP Auth') {
+        steps {
+         withCredentials([usernameColonPassword(credentialsId: '47239e99-fde5-4428-a57e-e2379577d2da', variable: 'gcp_project'), file(credentialsId: '0b17991c-6c39-4d96-be65-3abd0a6dc6f2', variable: 'Gcp_service')]) {
+         sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTALS'
+        }
+      }
+    }
+    stage("Docker pull") {
+      steps {
+        withCredentials([usernameColonPassword(credentialsId: 'efcbe52a-62a4-41b6-9659-5f414d299cdc', variable: 'docker')]) {
+        sh 'docker login -u charyy -p 123456789'
+        sh 'docker pull charyy/tejachary:tag33'
+      
+       }
+     }
+    }
+    stage("Docker tag") {
+      steps {     
+         sh 'docker tag charyy/tejachary:tag33 gcr.io/tarak-408506/mongodb:taga'
+      }
+    }
+    stage("Docker push") { 
+        steps {
+             sh 'gcloud auth configure-docker'
+             sh 'docker push charyy/tejachary:tag33'
+           }
+        }
+     stage("cluster create") {
+       steps {
+          sh 'gcloud container clusters create mongodb-cluster --num-nodes 3 --location=asia-east1-a'
+       }
+     }
+    stage("Create & expose deploy") {
+       steps {
+         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:taga'
+         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
+       }
+    }
+  }  
+} 
