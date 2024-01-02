@@ -1,6 +1,12 @@
 pipeline {
   agent any
   stages {
+
+      stage("Clear Workspace"){
+        steps {
+          sh 'rm -rvf G*'
+        }
+    }
        stage("Checkout") {
         steps {
         sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
