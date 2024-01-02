@@ -21,7 +21,7 @@ pipeline {
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: 'efcbe52a-62a4-41b6-9659-5f414d299cdc', variable: 'docker')]) {
+        withCredentials([usernameColonPassword(credentialsId: '04612ef4-06e8-4cb0-8bde-e5bc930020e6', variable: 'docker')])  {
         sh 'docker login -u charyy -p 123456789'
         sh 'docker pull charyy/tejachary:tag33'
       
