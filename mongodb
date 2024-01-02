@@ -13,7 +13,7 @@ pipeline {
     }
     stage('GCP Auth') {
         steps {
-       withCredentials([usernameColonPassword(credentialsId: 'de3ade76-1b25-477b-b46c-44249b069121', variable: 'docker')]){
+       withCredentials([usernameColonPassword(credentialsId: '47239e99-fde5-4428-a57e-e2379577d2da', variable: 'docker')]) {
     // some block
 }
         }
