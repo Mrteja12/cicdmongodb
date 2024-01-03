@@ -47,7 +47,7 @@ pipeline {
     stage("Create & expose deploy") {
        steps {
          sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:taga'
-         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port 80 --target-port 8080'
+         sh 'kubectl expose deployment mongodb --type=tcp-LoadBalancer  --target-port 27017'
        }
     }
   }  
