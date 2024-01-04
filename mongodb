@@ -30,7 +30,7 @@ pipeline {
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/tejachary:tag33 gcr.io/tarak-408506/mongodb:taga'
+         sh 'docker tag charyy/tejachary:tag33 gcr.io/teja-410209/mongodb:taga'
       }
     }
     stage("Docker push") { 
@@ -46,7 +46,7 @@ pipeline {
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/mongodb:taga'
+         sh 'kubectl create deployment mongodb --image=gcr.io/teja-410209/mongodb:taga'
          sh 'kubectl expose deployment mongodb --type=LoadBalancer --port=27017 --target-port=27017 --protocol=TCP'
 
        }
