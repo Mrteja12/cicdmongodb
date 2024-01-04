@@ -47,7 +47,7 @@ pipeline {
     stage("Create & expose deploy") {
        steps {
          sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/cassandradb:taga'
-         sh 'kubectl expose deployment mongodb --type=Tcp-LoadBalancer --port  7000'
+         sh 'kubectl expose deployment mongodb --type=Tcp-LoadBalancer --port=7000 --target-port=2700 --protocol=TCP'
        }
     }
   }  
