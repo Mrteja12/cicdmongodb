@@ -36,7 +36,7 @@ pipeline {
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push charyy/tejachary:tag33'
+             sh 'docker push charyy/tejachary:taga'
            }
         }
      stage("cluster create") {
