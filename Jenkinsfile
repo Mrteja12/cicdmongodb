@@ -30,7 +30,7 @@ pipeline {
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/tejachary:tag23 gcr.io/tarak-408506/cassandradb:taga'
+         sh 'docker tag charyy/tejachary:tag23 gcr.io/teja-410209/cassandradb:taga'
       }
     }
     stage("Docker push") { 
@@ -46,7 +46,7 @@ pipeline {
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment cassandradb --image=gcr.io/tarak-408506/cassandradb:taga'
+         sh 'kubectl create deployment cassandradb --image=gcr.io/teja-410209/cassandradb:taga'
          sh 'kubectl expose deployment cassandradb --type=Tcp-LoadBalancer --port=7000 --target-port=7000 --protocol=TCP'
        }
     }
