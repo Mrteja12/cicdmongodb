@@ -36,7 +36,7 @@ pipeline {
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push charyy/tejachary:tag23'
+             sh 'docker push charyy/tejachary:taga'
            }
         }
      stage("cluster create") {
@@ -46,8 +46,8 @@ pipeline {
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment mongodb --image=gcr.io/tarak-408506/cassandradb:taga'
-         sh 'kubectl expose deployment mongodb --type=Tcp-LoadBalancer --port=7000 --target-port=2700 --protocol=TCP'
+         sh 'kubectl create deployment cassandradb --image=gcr.io/tarak-408506/cassandradb:taga'
+         sh 'kubectl expose deployment cassandradb --type=Tcp-LoadBalancer --port=7000 --target-port=7000 --protocol=TCP'
        }
     }
   }  
