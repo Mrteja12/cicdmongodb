@@ -25,8 +25,7 @@ pipeline {
       
         sh 'docker pull charyy/my-mongodb-image:tag2'
         kubectl expose deployment mongodb-deployment --type=LoadBalancer --port 27017 --target-port=27017 --name=mongodb-service
-
-       }
+   
      }
     }
     stage("Docker tag") {
