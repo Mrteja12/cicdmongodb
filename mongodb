@@ -14,8 +14,8 @@ pipeline {
     }
     stage('GCP Auth') {
         steps {
-     withCredentials([usernamePassword(credentialsId: '5ae15644-0008-4295-b677-32eb45267f66', passwordVariable: '123456 ', usernameVariable: 'newgcp'), file(credentialsId: '79e30b64-eb46-4444-9052-7890c184211d', variable: '')]) {
-         sh 'gcloud auth activate-service-account --key-file=$GCP'
+     withCredentials([usernamePassword(credentialsId: '5ae15644-0008-4295-b677-32eb45267f66', passwordVariable: 'gcp', usernameVariable: 'gcp'), file(credentialsId: '79e30b64-eb46-4444-9052-7890c184211d', variable: 'gcp')]) {
+         sh 'gcloud auth activate-service-account --key-file=$gcp'
         }
       }
     }
