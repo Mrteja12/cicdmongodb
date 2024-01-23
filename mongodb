@@ -9,7 +9,7 @@ pipeline {
     }
        stage("Checkout") {
         steps {
-        sh 'https://github.com/Mrteja12/cicdmongodb/mongodb.git'
+        git branch: 'main', credentialsId: 'f14d13cc-ecb1-46b1-bc38-d63e23ec9823', url: 'https://github.com/Mrteja12/cicdmongodb.git'
       }
     }
     stage('GCP Auth') {
