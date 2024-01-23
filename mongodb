@@ -22,7 +22,7 @@ pipeline {
     stage("Docker pull") {
       steps {
         withCredentials([usernameColonPassword(credentialsId: 'f483136c-9d83-44d6-92cb-d880f2b80014', variable: 'docker')]){
-        sh 'docker login -u charyy -p 123456789'
+      
         sh 'docker pull charyy/my-mongodb-image:tag2'
       
        }
