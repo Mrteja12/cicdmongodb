@@ -30,13 +30,13 @@ pipeline {
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/my-mongodb-image:tag2 gcr.io/my-mongodb-image:tag2'
+         sh 'docker tag charyy/my-mongodb-image:tag2 gcr.io/teja-410209/my-mongodb-image:tag2'
       }
     }
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push charyy/my-mongodb-image:tag2'
+             sh 'docker push gcr.io/teja-410209/my-mongodb-image:tag2'
            }
         }
      stage("cluster create") {
