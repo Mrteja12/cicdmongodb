@@ -43,6 +43,7 @@ pipeline {
      stage("cluster create") {
        steps {
           sh 'gcloud container clusters create mongodb-cluster --num-nodes 3 --location=asia-east1-a'
+          sh 'gcloud compute ssh mongodb-cluster --zone=asia-east1-a command='sudo apt install kubectl''
        }
      }
     stage("Create & expose deploy") {
