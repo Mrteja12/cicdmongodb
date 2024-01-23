@@ -24,7 +24,7 @@ pipeline {
         withCredentials([usernameColonPassword(credentialsId: 'f483136c-9d83-44d6-92cb-d880f2b80014', variable: 'docker')]){
       
         sh 'docker pull charyy/my-mongodb-image:tag2'
-        kubectl expose deployment mongodb-deployment --type=LoadBalancer --port 27017 --target-port=27017 --name=mongodb-service
+        
    
      }
     }
