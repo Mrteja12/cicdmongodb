@@ -21,7 +21,7 @@ pipeline {
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: '6c15ba13-2c83-4f65-9e25-55371e9ea0b5', variable: 'veraiablres')])  {
+        withCredentials([usernamePassword(credentialsId: 'f483136c-9d83-44d6-92cb-d880f2b80014', passwordVariable: 'docker', usernameVariable: 'docker')])   {
         sh 'docker login -u charyy -p 123456789'
         sh 'docker pull charyy/my-mongodb-image:tag2'
       
