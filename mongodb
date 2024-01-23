@@ -41,13 +41,13 @@ pipeline {
         }
      stage("cluster create") {
        steps {
-          sh 'gcloud container clusters create mongodb-cluster --num-nodes 3 --location=asia-east1-a'
+          sh 'gcloud container clusters create mongodb-cluster1 --num-nodes 3 --location=asia-east1-a'
        }
      }
     stage("Create & expose deploy") {
        steps {
          sh 'kubectl create deployment mongodb --image=gcr.io/my-mongodb-image:tag2'
-         sh 'kubectl expose deployment mongodb --type=LoadBalancer --port=27017 --target-port=27017 --protocol=TCP'
+         # sh 'kubectl expose deployment mongodb --type=LoadBalancer --port=27017 --target-port=27017 --protocol=TCP'
 
        }
     }
