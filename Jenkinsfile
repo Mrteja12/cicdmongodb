@@ -9,45 +9,47 @@ pipeline {
     }
        stage("Checkout") {
         steps {
-        sh 'git clone https://github.com/Mrteja12/cicdmongodb.git'
+        git branch: 'main', credentialsId: 'f14d13cc-ecb1-46b1-bc38-d63e23ec9823', url: 'https://github.com/Mrteja12/cicdmongodb.git'
       }
     }
     stage('GCP Auth') {
         steps {
-         withCredentials([usernameColonPassword(credentialsId: 'd5561465-63fa-4631-94f1-b8199d940da6', variable: 'GCP'), file(credentialsId: 'GCP', variable: 'GCP')]){
-         sh 'gcloud auth activate-service-account --key-file=$GCP'
+          withCredentials([file(credentialsId: 'd688f03f-872d-4900-8c43-d5e5000a20c3', variable: 'gcp_creden')]) {
+         sh 'gcloud auth activate-service-account --key-file=$gcp_creden'
         }
       }
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: '04612ef4-06e8-4cb0-8bde-e5bc930020e6', variable: 'docker')])  {
-        sh 'docker login -u charyy -p 123456789'
-        sh 'docker pull charyy/tejachary:tag23'
+        withCredentials([usernameColonPassword(credentialsId: 'f483136c-9d83-44d6-92cb-d880f2b80014', variable: 'docker')]){
       
-       }
+        sh 'docker pull charyy/cassandra:tag'
+        }
+   
      }
     }
     stage("Docker tag") {
       steps {     
-         sh 'docker tag charyy/tejachary:tag23 gcr.io/teja-410209/cassandradb:taga'
+         sh 'docker tag charyy/cassandra:tag gcr.io/teja-410209/cassandra:tag'
       }
     }
     stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
-             sh 'docker push charyy/tejachary:taga'
+             sh 'docker push gcr.io/teja-410209/cassandra:tag'
            }
         }
      stage("cluster create") {
        steps {
-          sh 'gcloud container clusters create cassandradb-cluster --num-nodes 3 --location=asia-east1-a'
+          sh 'gcloud container clusters create cassandra-cluster --num-nodes 3 --location=asia-east1-a'
+          
        }
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment cassandradb --image=gcr.io/teja-410209/cassandradb:taga'
-         sh 'kubectl expose deployment cassandradb --type=Tcp-LoadBalancer --port=7000 --target-port=7000 --protocol=TCP'
+         sh 'kubectl create deployment cassandra --image=gcr.io/cassandra:tag'
+         
+
        }
     }
   }  
